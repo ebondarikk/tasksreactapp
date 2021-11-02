@@ -5,6 +5,7 @@ export const PAGE_SIZE = 3;
 export const TASK_ADDED_SUCCESS = 'New task was added successfully';
 export const TASK_EDITED_SUCCESS = 'The task was edited succesfully';
 export const LOGIN_SUCCESS = 'Login Succeeded';
+export const TRY_TO_LOGIN = 'Please, try to login again';
 
 export const OK_RESPONSE_STATUS = 'ok';
 export const ERROR_RESPONSE_STATUS = 'error';

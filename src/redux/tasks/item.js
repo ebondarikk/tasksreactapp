@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import { put, takeLatest, call } from 'redux-saga/effects';
-import { ERROR_RESPONSE_STATUS, OK_RESPONSE_STATUS } from 'consts';
+import {
+  ERROR_RESPONSE_STATUS,
+  OK_RESPONSE_STATUS,
+  TRY_TO_LOGIN,
+} from 'consts';
 import api from 'api';
 import {
   REQUEST,
@@ -97,6 +101,7 @@ export const edit = newTaskPostModule({
     if (data.status === ERROR_RESPONSE_STATUS && data.message?.token) {
       yield put(toast.failure(data.message.token));
       yield put(logout());
+      yield put(toast.failure(TRY_TO_LOGIN));
     }
     return resp;
   },
