@@ -3,6 +3,7 @@ import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
+import storage from 'storage';
 
 const devtools = window.__REDUX_DEVTOOLS_EXTENSION__;
 
@@ -34,11 +35,13 @@ export class Failure {
   }
 }
 
+export const EXCEPTION_CODE = 1;
+
 export const newFailure = (e, schema = (x) => x) => {
   if (e?.response) {
     return new Failure(e.response.status, schema(e.response.data));
   }
-  return new Failure(1);
+  return new Failure(EXCEPTION_CODE, schema(e));
 };
 
 export const REQUEST = 0;
@@ -83,7 +86,7 @@ export const newListReducer = (constants) =>
         loading: false,
         failure: null,
         results: action.data.items,
-        count: action.data.count,
+        count: parseInt(action.data.count),
       }),
       [constants[FAILURE]]: (_, action) => ({
         count: 0,
@@ -106,7 +109,7 @@ export const newListReducer = (constants) =>
     }
   );
 
-export const newCreateReducer = (constants) =>
+export const newPostReducer = (constants, forLogin = false) =>
   newReducer(
     {
       [constants[REQUEST]]: (state, _) => ({
@@ -133,38 +136,8 @@ export const newCreateReducer = (constants) =>
     {
       loading: false,
       failure: null,
-      success: false,
-    }
-  );
-
-export const newUpdateReducer = (constants) =>
-  newReducer(
-    {
-      [constants[REQUEST]]: (state, _) => ({
-        ...state,
-        loading: true,
-      }),
-      [constants[SUCCESS]]: (state, _) => ({
-        ...state,
-        loading: false,
-        failure: null,
-        success: true,
-      }),
-      [constants[FAILURE]]: (state, action) => ({
-        loading: false,
-        failure: action.data,
-        success: false,
-      }),
-      [constants[CLEANUP]]: (_) => ({
-        loading: false,
-        failure: null,
-        success: false,
-      }),
-    },
-    {
-      loading: false,
-      failure: null,
-      success: false,
+      // TODO: fix it
+      success: forLogin ? storage.getToken() : false,
     }
   );
 
@@ -175,3 +148,9 @@ export class Module {
     this.selectors = selectors;
   }
 }
+
+export const getFormData = (object) =>
+  Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+  }, new FormData());
