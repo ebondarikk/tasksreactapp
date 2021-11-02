@@ -82,7 +82,7 @@ const Page = ({ dispatch, request, results, loading, count }) => {
         className={classes.grid}
       >
         <Grid item container justifyContent='space-between'>
-          <Grid item xs={2}>
+          <Grid item xs={12} md={2}>
             <IconButton
               color='secondary'
               className={classes.addButton}
@@ -91,12 +91,13 @@ const Page = ({ dispatch, request, results, loading, count }) => {
               <AddCircleOutlineOutlinedIcon fontSize={'large'} />
             </IconButton>
           </Grid>
-          <Grid item xs={8} container justifyContent='center'>
+          <Grid item xs={12} md={8} container justifyContent='center'>
             <Typography variant='h2'>Tasks</Typography>
           </Grid>
           <Grid
             item
-            xs={2}
+            xs={12}
+            md={2}
             container
             spacing={2}
             justifyContent='end'

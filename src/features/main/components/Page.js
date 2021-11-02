@@ -13,7 +13,6 @@ export const Page = () => {
       <Container component='main' className={classes.main} maxWidth={'xl'}>
         <Features />
       </Container>
-      {/* <Footer /> */}
     </>
   );
 };
